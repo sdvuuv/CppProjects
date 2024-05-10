@@ -1,7 +1,6 @@
 #pragma once
 #ifndef _LINELIST_H
 #define _LINELIST_H
-
 #include <iostream>
 using namespace std;
 
@@ -27,13 +26,14 @@ template <class T>
 class LineList
 {
     LineList(const LineList &list);
-    LineList &operator=(const LineList &list);
+    int size;
 
 public:
     LineListElem<T> *start;
     LineList();
     ~LineList();
     LineListElem<T> *getStart();
+    int getSize();
 
     void deleteFirst();
     void deleteAfter(LineListElem<T> *ptr);
@@ -67,6 +67,7 @@ template <class T>
 LineList<T>::LineList()
 {
     start = 0;
+    size = 0;
 }
 
 template <class T>
@@ -92,6 +93,7 @@ void LineList<T>::deleteFirst()
         LineListElem<T> *temp = start->next;
         delete start;
         start = temp;
+        size--;
     }
     else
         throw LineListException();
@@ -105,6 +107,7 @@ void LineList<T>::deleteAfter(LineListElem<T> *ptr)
         LineListElem<T> *temp = ptr->next;
         ptr->next = ptr->next->next;
         delete temp;
+        size--;
     }
     else
         throw LineListException();
@@ -115,6 +118,7 @@ void LineList<T>::insertFirst(const T &data)
 {
     LineListElem<T> *second = start;
     start = new LineListElem<T>(data, second);
+    size++;
 }
 
 template <class T>
@@ -125,6 +129,7 @@ void LineList<T>::insertAfter(LineListElem<T> *ptr, const T &data)
         LineListElem<T> *temp = ptr->next;
         ptr->next = new LineListElem<T>(data, temp);
     }
+    size++;
 }
 
 template <class T>
@@ -142,4 +147,8 @@ ostream &operator<<(ostream &out, LineList<T> &list)
     return out;
 }
 
+template <class T>
+int LineList<T>::getSize() {
+    return size;
+}
 #endif

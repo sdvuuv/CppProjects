@@ -22,21 +22,42 @@ using namespace std;
 
 int answer(int N, int k)
 {
+    int index = 0;
+    int last_index = 0;
     LineList<int> list;
-    // int index = 0;
-    // list.insertFirst(1);
-    LineListElem<int> *start = list.getStart();
-    LineListElem<int> *prev = start;
 
-    int counter = 1;
     for (int i = N; i > 0; i--)
     {
-
         list.insertFirst(i);
     }
-    int last;
-    return last;
-    // Пока думаю как реализовать задачу Иосифа Флавия с указателями
+    LineListElem<int>* elem = list.getStart();
+
+
+    while (list.getSize() > 1) {
+        index = (index + k - 1) % list.getSize();
+        if (last_index > index) {
+            last_index = index;
+            elem = list.getStart();
+        }
+        if (!index) {
+            list.deleteFirst();
+            elem = list.getStart();
+        }
+        else if (index == 1) {
+            elem = list.getStart();
+            list.deleteAfter(elem);
+        }
+        else {
+            for (int i = last_index; i < index; i++) {
+                elem = elem->getNext();
+            }
+            list.deleteAfter(elem);
+        }
+        last_index = index;
+    }
+
+    return list.getStart()->getData();
+
 }
 int main()
 {
@@ -45,7 +66,7 @@ int main()
 
     int arrN[8] = {1000, 5000, 10000, 50000, 100000, 500000, 1000000, 2000000};
     int k = 2;
-    for (int i = 0; i < 2; i++)
+    for (int i = 0; i < SIZE(arrN); i++)
     {
         time(&start);
         int a = answer(arrN[i], k);
