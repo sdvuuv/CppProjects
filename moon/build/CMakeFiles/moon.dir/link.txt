@@ -1,0 +1,1 @@
+/usr/bin/c++ CMakeFiles/moon.dir/main.cpp.o CMakeFiles/moon.dir/datetime.cpp.o -o moon 
